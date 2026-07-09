@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Mission: Orlando</title>
+<style>
+  :root{
+    --navy:#0B4F6C;
+    --navy-deep:#073A50;
+    --orange:#FF6A39;
+    --sand:#FFF9EE;
+    --teal:#0FA3A3;
+    --aqua:#39C6D9;
+    --gold:#FFD23F;
+    --ink:#1A1A1A;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--sand);
+    color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    letter-spacing:.06em;
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    background:linear-gradient(180deg, #0B4F6C 0%, #0FA3A3 55%, #39C6D9 100%);
+    color:var(--sand);
+    padding:56px 20px 90px;
+    overflow:hidden;
+    text-align:center;
+  }
+  .stars{
+    position:absolute; inset:0; overflow:hidden;
+    background-image:
+      radial-gradient(3px 3px at 12% 22%, rgba(255,255,255,.55) 100%, transparent),
+      radial-gradient(2px 2px at 82% 15%, rgba(255,255,255,.5) 100%, transparent),
+      radial-gradient(2.5px 2.5px at 35% 65%, rgba(255,255,255,.45) 100%, transparent),
+      radial-gradient(2px 2px at 65% 78%, rgba(255,255,255,.5) 100%, transparent),
+      radial-gradient(2.5px 2.5px at 92% 55%, rgba(255,255,255,.4) 100%, transparent),
+      radial-gradient(2px 2px at 48% 32%, rgba(255,255,255,.5) 100%, transparent);
+    opacity:.8;
+    animation:twinkle 3.5s ease-in-out infinite alternate;
+  }
+  .waves{
+    position:absolute; left:0; right:0; bottom:0; height:90px;
+    background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'><path d='M0,40 C150,90 350,0 600,40 C850,80 1050,10 1200,40 L1200,120 L0,120 Z' fill='%23FFF9EE' opacity='0.9'/></svg>") repeat-x;
+    background-size:1200px 90px;
+    animation:wavescroll 9s linear infinite;
+  }
+  @keyframes wavescroll{ from{background-position-x:0;} to{background-position-x:-1200px;} }
+  @keyframes twinkle{from{opacity:.5;} to{opacity:.95;}}
+  .eyebrow{
+    position:relative; z-index:2;
+    font-size:12px; text-transform:uppercase; color:var(--gold);
+    margin-bottom:14px; font-weight:700;
+  }
+  h1{
+    position:relative; z-index:2;
+    font-size:clamp(36px,7vw,64px);
+    margin:0 0 10px;
+    font-weight:800;
+    letter-spacing:-.02em;
+    line-height:1.02;
+  }
+  h1 span{color:var(--orange);}
+  .rocket{
+    position:relative; z-index:2;
+    font-size:40px; margin-top:10px;
+    display:inline-block;
+    animation:bob 2.8s ease-in-out infinite;
+  }
+  @keyframes bob{
+    0%{transform:translateY(0) rotate(-3deg);}
+    50%{transform:translateY(-10px) rotate(3deg);}
+    100%{transform:translateY(0) rotate(-3deg);}
+  }
+
+  /* ---------- INSTRUCTIONS ---------- */
+  .howto{
+    max-width:720px; margin:-30px auto 0; position:relative; z-index:3;
+    background:white; border-radius:16px; padding:18px 22px;
+    box-shadow:0 12px 30px rgba(14,27,61,.15);
+    font-size:14px; text-align:center; color:#3a3a3a;
+  }
+  .howto b{color:var(--navy);}
+
+  /* ---------- SECTIONS ---------- */
+  main{max-width:980px; margin:0 auto; padding:50px 20px 30px;}
+  .section{margin-bottom:52px;}
+  .section-head{
+    display:flex; align-items:baseline; gap:10px; margin-bottom:6px;
+    border-bottom:2px solid var(--navy); padding-bottom:10px;
+  }
+  .section-head .tag{
+    font-size:11px; text-transform:uppercase; font-weight:700;
+    color:white; background:var(--navy); padding:4px 9px; border-radius:6px;
+  }
+  .section-head h2{font-size:22px; margin:0; color:var(--navy);}
+  .section-desc{font-size:13.5px; color:#666; margin:8px 0 20px;}
+
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+    gap:16px;
+  }
+  .card{
+    background:white; border-radius:14px; padding:18px;
+    border:1px solid #ECE3D3;
+    display:flex; flex-direction:column; gap:10px;
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .card:hover{transform:translateY(-2px); box-shadow:0 10px 24px rgba(14,27,61,.1);}
+  .card h3{margin:0; font-size:16px; color:var(--ink);}
+  .card p{margin:0; font-size:13px; color:#666; line-height:1.4; flex-grow:1;}
+  .tags{display:flex; gap:6px; flex-wrap:wrap;}
+  .pill{
+    font-size:10.5px; font-weight:700; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px;
+  }
+  .pill.teen{background:#E9E3F7; color:#5B3EBF;}
+  .pill.little{background:#FFE9D6; color:#C2530C;}
+  .pill.all{background:#DDF0EA; color:#136B5E;}
+  .video-link{
+    display:inline-flex; align-items:center; gap:6px;
+    font-size:12.5px; font-weight:700; color:var(--teal);
+    text-decoration:none; border:1px solid #D7ECE8; background:#F3FAF9;
+    padding:6px 10px; border-radius:8px; width:fit-content;
+    cursor:pointer;
+  }
+  .video-link:hover{background:#E6F4F1;}
+  .video-link.ext{color:#8A6D3B; border-color:#F0E4C9; background:#FBF5E6;}
+  .video-frame{
+    position:relative; width:100%; padding-top:56.25%;
+    border-radius:10px; overflow:hidden; background:#000;
+  }
+  .video-frame iframe{
+    position:absolute; inset:0; width:100%; height:100%; border:0;
+  }
+  .video-close{
+    display:inline-flex; align-items:center; gap:6px;
+    font-size:11.5px; font-weight:700; color:#999;
+    background:none; border:none; cursor:pointer; padding:0;
+  }
+  .video-close:hover{color:#666;}
+  .vote-row{
+    display:flex; align-items:center; justify-content:space-between;
+    margin-top:4px; padding-top:10px; border-top:1px dashed #EEE4D2;
+  }
+  .count{font-size:13px; color:var(--navy); font-weight:700;}
+  .vote-btn{
+    border:none; background:var(--orange); color:white;
+    padding:7px 14px; border-radius:999px; font-size:13px; font-weight:700;
+    cursor:pointer; transition:transform .1s ease, background .15s ease;
+  }
+  .vote-btn:hover{background:#e85a2b;}
+  .vote-btn:active{transform:scale(.94);}
+  .vote-btn.voted{background:var(--teal);}
+
+  /* leaderboard */
+  .leaderboard{
+    background:var(--navy); color:var(--sand); border-radius:16px;
+    padding:26px 24px; margin-top:10px;
+  }
+  .leaderboard h2{margin:0 0 4px; font-size:20px;}
+  .leaderboard .sub2{font-size:12.5px; opacity:.7; margin-bottom:18px;}
+  .lb-row{
+    display:flex; align-items:center; gap:12px;
+    padding:9px 0; border-bottom:1px solid rgba(255,255,255,.1);
+    font-size:14px;
+  }
+  .lb-row:last-child{border-bottom:none;}
+  .lb-rank{width:22px; text-align:center; font-weight:800; color:var(--gold);}
+  .lb-name{flex-grow:1;}
+  .lb-count{font-weight:700; color:var(--orange);}
+  .empty{opacity:.6; font-size:13px; padding:10px 0;}
+
+  footer{
+    text-align:center; padding:30px 20px 50px; font-size:12px; color:#999;
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="stars"></div>
+  <div class="eyebrow mono">FAMILY VOTE &middot; AUG 1 &ndash; AUG 9</div>
+  <h1>Mission: <span>Orlando</span></h1>
+  <div class="rocket">🏄‍♀️🌊🏰</div>
+  <div class="waves"></div>
+</div>
+
+<div class="howto">
+  <b>How this works:</b> every card has a <b>🎥 Watch here</b> button that plays a preview right on this page &mdash; no new tab. A few newer/smaller spots only have a "🔍 Find on YouTube" link since I couldn't verify a direct video for those. Tap the vote button on anything you're excited about &mdash; votes update live for everyone who opens this page.
+</div>
+
+<main>
+
+  <div class="section">
+    <div class="section-head">
+      <span class="tag">Zone 1</span>
+      <h2>Theme Parks (the big ones)</h2>
+    </div>
+    <p class="section-desc">Pick your must-do parks &mdash; with 9 days we can't do them all, so this narrows it down.</p>
+    <div class="grid" id="grid-parks"></div>
+  </div>
+
+  <div class="section">
+    <div class="section-head">
+      <span class="tag">Zone 2</span>
+      <h2>Water Parks</h2>
+    </div>
+    <p class="section-desc">Florida in August = hot. These are the cool-off days.</p>
+    <div class="grid" id="grid-water"></div>
+  </div>
+
+  <div class="section">
+    <div class="section-head">
+      <span class="tag">Zone 3</span>
+      <h2>Space &amp; Science</h2>
+    </div>
+    <p class="section-desc">The NASA day &mdash; and a couple of nearby alternatives if we want more.</p>
+    <div class="grid" id="grid-space"></div>
+  </div>
+
+  <div class="section">
+    <div class="section-head">
+      <span class="tag">Zone 4</span>
+      <h2>Just for the Teen</h2>
+    </div>
+    <p class="section-desc">Things that'll land better with a 16-year-old than a 5-year-old.</p>
+    <div class="grid" id="grid-teen"></div>
+  </div>
+
+  <div class="section">
+    <div class="section-head">
+      <span class="tag">Zone 5</span>
+      <h2>Just for the Little One</h2>
+    </div>
+    <p class="section-desc">Gentler, slower-paced stops built for a 5-year-old's attention span.</p>
+    <div class="grid" id="grid-little"></div>
+  </div>
+
+  <div class="section">
+    <div class="section-head">
+      <span class="tag">Zone 6</span>
+      <h2>Dinner Shows &amp; Evenings</h2>
+    </div>
+    <p class="section-desc">One or two nights of built-in entertainment instead of a regular restaurant.</p>
+    <div class="grid" id="grid-dinner"></div>
+  </div>
+
+  <div class="section">
+    <div class="section-head">
+      <span class="tag">Zone 7</span>
+      <h2>Free &amp; Easy Rest Days</h2>
+    </div>
+    <p class="section-desc">Low-key, low-cost options for a slower day between parks.</p>
+    <div class="grid" id="grid-free"></div>
+  </div>
+
+  <div class="section">
+    <div class="section-head">
+      <span class="tag">Zone 8</span>
+      <h2>Restaurants &mdash; Inside the Parks</h2>
+    </div>
+    <p class="section-desc">Sit-down spots worth planning a park day around.</p>
+    <div class="grid" id="grid-food-inside"></div>
+  </div>
+
+  <div class="section">
+    <div class="section-head">
+      <span class="tag">Zone 9</span>
+      <h2>Restaurants &mdash; Outside the Parks</h2>
+    </div>
+    <p class="section-desc">Off-property dinners for a night away from the parks.</p>
+    <div class="grid" id="grid-food-outside"></div>
+  </div>
+
+  <div class="section">
+    <div class="section-head">
+      <span class="tag">Zone 10</span>
+      <h2>Hotels &mdash; On-Site (Inside the Resorts)</h2>
+    </div>
+    <p class="section-desc">Staying on-property usually means early park entry and, at Universal's top-tier hotels, free skip-the-line access.</p>
+    <div class="grid" id="grid-hotel-inside"></div>
+  </div>
+
+  <div class="section">
+    <div class="section-head">
+      <span class="tag">Zone 11</span>
+      <h2>Hotels &mdash; Off-Site</h2>
+    </div>
+    <p class="section-desc">Usually cheaper per square foot, with free shuttles to the parks.</p>
+    <div class="grid" id="grid-hotel-outside"></div>
+  </div>
+
+  <div class="leaderboard">
+    <h2>📊 Live Leaderboard</h2>
+    <div class="sub2">Ranked by family votes &mdash; refresh anytime to see the latest.</div>
+    <div id="lb-list"><div class="empty">No votes yet &mdash; be the first!</div></div>
+  </div>
+
+</main>
+
+<footer>Vote counts are shared with everyone who opens this page. Tap as many as you like &mdash; this is a wishlist, not a ballot with one pick.</footer>
+
+<script>
+const DATA = {
+  parks: [
+    {id:'p-epic', name:'Universal Epic Universe', desc:"Brand-new 4th gate: Super Nintendo World, How to Train Your Dragon, Harry Potter's Ministry of Magic, Dark Universe.", tags:['all'], video:'6VJPxemrw-k'},
+    {id:'p-usf', name:'Universal Studios Florida', desc:'DreamWorks Land (Shrek, Trolls, Kung Fu Panda), Minions, Wizarding World Diagon Alley.', tags:['all'], video:'MVuEPAKEzJ0'},
+    {id:'p-ioa', name:"Universal Islands of Adventure", desc:'Hogwarts + Hogsmeade, Jurassic Park, Seuss Landing for the little one.', tags:['all'], video:'kKAkpaaoF10'},
+    {id:'p-mk', name:'Magic Kingdom (Disney)', desc:'Cinderella Castle, classic rides, characters &mdash; the most little-one-friendly Disney park.', tags:['little','all'], video:'GV-iShUfJPE'},
+    {id:'p-epcot', name:'EPCOT (Disney)', desc:'World Showcase + Frozen Ever After. More relaxed pace, great food.', tags:['all'], video:'l6jYF3dixCo'},
+    {id:'p-hs', name:"Hollywood Studios (Disney)", desc:'Star Wars: Galaxy\'s Edge, Toy Story Land, new Muppets Rock \'n\' Roller Coaster.', tags:['teen','all'], video:'4ItzE7M_vbs'},
+    {id:'p-ak', name:'Animal Kingdom (Disney)', desc:'Kilimanjaro Safaris, Pandora, real wildlife &mdash; good middle ground for both girls.', tags:['all'], video:'MreFMkZqJZk'},
+    {id:'p-seaworld', name:'SeaWorld Orlando', desc:'Mako coaster for the teen, new SEAQuest dark ride is calmer for younger kids.', tags:['all'], video:'-EbhDEbcXEs'},
+    {id:'p-legoland', name:'LEGOLAND + Peppa Pig Park', desc:'New Galacticoaster (family-friendly indoor coaster). Peppa Pig park next door is built for under-5s.', tags:['little'], video:'NROFYmzGFDg'},
+    {id:'p-busch', name:'Busch Gardens Tampa (day trip)', desc:'~1.5 hrs away. Big coasters for the teen, Summer Nights extended hours through Aug 9.', tags:['teen']}
+  ],
+  water: [
+    {id:'w-volcano', name:"Universal Volcano Bay", desc:'Universal\'s water park &mdash; slides for the teen, calmer areas for the 5-year-old.', tags:['all'], video:'lgyOzcj1EQk'},
+    {id:'w-typhoon', name:"Disney's Typhoon Lagoon", desc:'Wave pool + a real kids\' splash zone.', tags:['all']},
+    {id:'w-blizzard', name:"Disney's Blizzard Beach", desc:"One of the world's tallest free-fall slides &mdash; more of a teen park.", tags:['teen']},
+    {id:'w-aquatica', name:'Aquatica Orlando', desc:"SeaWorld's water park, dolphin-view lazy river, dedicated young kids' area.", tags:['all']}
+  ],
+  space: [
+    {id:'s-ksc', name:'Kennedy Space Center Visitor Complex', desc:'Space Shuttle Atlantis, Saturn V, bus tour, Junior Astronaut Training Zone for the 5-year-old.', tags:['all'], video:'zhJLmJRDrAQ'},
+    {id:'s-launch', name:'Rocket Launch Viewing (if one\'s scheduled)', desc:'Free if timing lines up &mdash; watch from the causeway or a nearby beach.', tags:['all']},
+    {id:'s-orlandoscience', name:'Orlando Science Center', desc:'Hands-on museum, a good rainy-day or lower-key science fix if one NASA day isn\'t enough.', tags:['little','all']}
+  ],
+  teen: [
+    {id:'t-iconpark', name:'ICON Park + The Orlando Eye', desc:'240ft observation wheel, free to walk around, restaurants, arcade.', tags:['teen'], video:'wUAXKmlgccU'},
+    {id:'t-escape', name:'Puzzle Corp Escape Rooms', desc:'Themed escape rooms &mdash; a good non-park evening activity for a 16-year-old.', tags:['teen']},
+    {id:'t-moic', name:'Museum of Ice Cream (opening 2026)', desc:'Colorful interactive installations, sprinkle pool &mdash; very teen/social-media friendly.', tags:['teen']},
+    {id:'t-society', name:'Society Park (padel, pickleball, exhibition court)', desc:"New Gen-Z-leaning sports club on International Drive, opened April 2026.", tags:['teen']},
+    {id:'t-popstroke', name:'PopStroke Mini Golf', desc:'Tech-driven mini golf + casual dining, fun for teens and adults.', tags:['teen','all']}
+  ],
+  little: [
+    {id:'l-crayola', name:'Crayola Experience', desc:'Hands-on creative play, indoor &amp; air-conditioned &mdash; great for a 5-year-old on a hot afternoon.', tags:['little']},
+    {id:'l-gatorland', name:'Gatorland', desc:'Alligators up close, gentle pace, classic Florida roadside attraction feel.', tags:['little','all']},
+    {id:'l-sloth', name:'Sloth World (opening Feb 2026)', desc:'Small-group rainforest habitat with free-roaming sloths &mdash; calm and educational.', tags:['little']},
+    {id:'l-splash', name:'Lake Eola Park + Splash Pad', desc:'Free playgrounds, paddle boats, walking loop &mdash; an easy free morning.', tags:['little','all']},
+    {id:'l-wonderworks', name:'WonderWorks Orlando', desc:'Upside-down building, indoor hands-on exhibits for a rainy or scorching-hot day.', tags:['little','teen']}
+  ],
+  dinner: [
+    {id:'d-medieval', name:'Medieval Times Dinner Tournament', desc:'Jousting knights, dinner with your hands &mdash; usually a hit with younger kids.', tags:['little','all'], video:'H7BgAzvGAU4'},
+    {id:'d-pirates', name:"Pirate's Dinner Adventure", desc:'Pirate ship stunt show + dinner, family sing-alongs.', tags:['little','all']},
+    {id:'d-cirque', name:"Drawn to Life by Cirque du Soleil (Disney Springs)", desc:'Cirque acrobatics with a Disney animation theme &mdash; works for both girls.', tags:['all']},
+    {id:'d-blueman', name:'Blue Man Group (new ICON Park theater, opened May 2026)', desc:'Music, comedy, no dialogue &mdash; usually great for teens, can be a lot for a 5-year-old.', tags:['teen']}
+  ],
+  free: [
+    {id:'f-disneysprings', name:'Disney Springs', desc:'Free entry &amp; parking, shops, splash pads behind Earl of Sandwich, LEGO Store play tables.', tags:['all'], video:'AjkWsr0P1JM'},
+    {id:'f-boardwalk', name:"Disney's BoardWalk", desc:'Free waterfront district, street performers, Epcot fireworks views.', tags:['all']},
+    {id:'f-citywalk', name:'Universal CityWalk', desc:'Free to walk, shops &amp; restaurants right between the Universal parks.', tags:['all']},
+    {id:'f-lakeapopka', name:'Lake Apopka Wildlife Drive', desc:'Free 11-mile scenic drive, alligators &amp; birds from the car &mdash; easy with a 5-year-old.', tags:['little','all']}
+  ],
+  foodInside: [
+    {id:'r-cinderella', name:"Cinderella's Royal Table", desc:'Inside the castle at Magic Kingdom &mdash; princess character dining, a huge deal for a 5-year-old. Book months ahead.', tags:['little']},
+    {id:'r-beourguest', name:'Be Our Guest', desc:"Beast's Castle dining room in Fantasyland &mdash; French-inspired menu, works for both girls.", tags:['all']},
+    {id:'r-50s', name:"50's Prime Time Cafe", desc:'Hollywood Studios &mdash; comfort food, servers rib you like family dinner in the &apos;50s. Fun for a teen.', tags:['teen','all']},
+    {id:'r-mythos', name:'Mythos Restaurant', desc:"Inside Islands of Adventure, overlooking the lagoon &mdash; repeatedly voted best theme park restaurant in the world.", tags:['all']},
+    {id:'r-leaky', name:'Leaky Cauldron', desc:'Diagon Alley (Universal Studios Florida) &mdash; British pub fare, Butterbeer, big Harry Potter payoff.', tags:['teen','all']},
+    {id:'r-toothsome', name:'Toothsome Chocolate Emporium', desc:'CityWalk &mdash; steampunk-themed, over-the-top milkshakes. A hit with teens especially.', tags:['teen']},
+    {id:'r-sanaa', name:'Boma &ndash; Flavors of Africa', desc:"Animal Kingdom Lodge &mdash; African-inspired buffet with something for picky and adventurous eaters alike.", tags:['all']}
+  ],
+  foodOutside: [
+    {id:'r-4rivers', name:'4 Rivers Smokehouse', desc:'Local Florida BBQ chain &mdash; casual, kid-friendly, usually a crowd-pleaser after a long park day.', tags:['all']},
+    {id:'r-ravenouspig', name:'The Ravenous Pig', desc:'Winter Park &mdash; upscale gastropub, better suited to a grown-up dinner or with an easygoing teen.', tags:['teen']},
+    {id:'r-columbia', name:'Columbia Restaurant', desc:'Historic Spanish-Cuban restaurant, famous 1905 salad &mdash; a sit-down break from theme park food.', tags:['all']},
+    {id:'r-se7enbites', name:'Se7en Bites', desc:'Southern comfort food and huge desserts &mdash; casual, laid-back, good with kids.', tags:['little','all']},
+    {id:'r-crackerbarrel', name:'Cracker Barrel', desc:'Reliable, familiar, and easy with a 5-year-old if everyone needs a low-key night.', tags:['little']}
+  ],
+  hotelInside: [
+    {id:'h-hardrock', name:'Universal Hard Rock Hotel', desc:'Premier tier &mdash; free Universal Express Unlimited for your whole stay, walkable to CityWalk.', tags:['teen','all']},
+    {id:'h-portofino', name:'Loews Portofino Bay Hotel', desc:'Universal Premier tier, Italian-village theming, quieter/more upscale feel &mdash; also gets free Express passes.', tags:['all']},
+    {id:'h-cabanabay', name:"Universal's Cabana Bay Beach Resort", desc:'Universal value tier, retro &apos;50s/&apos;60s vibe, lazy river, bowling alley, closest hotel to Volcano Bay.', tags:['little','all']},
+    {id:'h-grandflo', name:"Disney's Grand Floridian Resort & Spa", desc:'Disney deluxe, Victorian style, monorail to Magic Kingdom &mdash; the splurge option.', tags:['all']},
+    {id:'h-aoa', name:"Disney's Art of Animation Resort", desc:'Family suites themed to Finding Nemo, The Lion King &amp; Little Mermaid &mdash; a strong pick for a 5-year-old, and budget-friendlier than deluxe resorts.', tags:['little']},
+    {id:'h-animalkingdomlodge', name:"Disney's Animal Kingdom Lodge", desc:'Rooms overlook a real savanna with giraffes &amp; zebras &mdash; a novelty both girls would probably love.', tags:['little','all']}
+  ],
+  hotelOutside: [
+    {id:'h-fourseasons', name:'Four Seasons Resort Orlando', desc:"Off-property luxury next to Disney, huge water slide, excellent kids' club &mdash; a favorite for families who want a resort day mixed in.", tags:['all']},
+    {id:'h-waldorf', name:'Waldorf Astoria Orlando', desc:'Upscale, quieter, golf course on-site &mdash; walkable to its sister Hilton Bonnet Creek.', tags:['all']},
+    {id:'h-jwmarriott', name:'JW Marriott Bonnet Creek', desc:'Large resort pool complex, still very close to Disney property without Disney prices.', tags:['all']},
+    {id:'h-vacationhome', name:'Vacation Home Rental (Kissimmee area)', desc:'A house with a private pool &mdash; often the most cost-effective and spacious option for a family of 4.', tags:['all']}
+  ]
+};
+
+const TAG_LABEL = {teen:'Teen approved', little:'Little one approved', all:'Whole family'};
+
+function cardHTML(item){
+  const tags = item.tags.map(t => `<span class="pill ${t}">${TAG_LABEL[t]}</span>`).join('');
+  let videoBit;
+  if(item.video){
+    videoBit = `<button class="video-link" id="btnv-${item.id}" onclick="toggleVideo('${item.id}','${item.video}')">🎥 Watch here</button>
+      <div class="video-frame" id="frame-${item.id}" style="display:none;"></div>`;
+  } else if(item.noVideo){
+    videoBit = '';
+  } else {
+    const q = encodeURIComponent(item.name + ' Orlando');
+    videoBit = `<a class="video-link ext" href="https://www.youtube.com/results?search_query=${q}" target="_blank" rel="noopener">🔍 Find on YouTube</a>`;
+  }
+  return `
+    <div class="card" data-id="${item.id}" data-name="${item.name}">
+      <h3>${item.name}</h3>
+      <p>${item.desc}</p>
+      <div class="tags">${tags}</div>
+      ${videoBit}
+      <div class="vote-row">
+        <span class="count mono" id="count-${item.id}">0 votes</span>
+        <button class="vote-btn" onclick="vote('${item.id}','${item.name.replace(/'/g,"\\'")}')" id="btn-${item.id}">♡ Vote</button>
+      </div>
+    </div>`;
+}
+
+function toggleVideo(id, videoId){
+  const frame = document.getElementById('frame-'+id);
+  const btn = document.getElementById('btnv-'+id);
+  if(frame.style.display === 'none'){
+    frame.innerHTML = `<iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1" title="video" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+    frame.style.display = 'block';
+    btn.textContent = '✕ Close video';
+  } else {
+    frame.innerHTML = '';
+    frame.style.display = 'none';
+    btn.textContent = '🎥 Watch here';
+  }
+}
+
+function renderGrid(elId, items){
+  document.getElementById(elId).innerHTML = items.map(cardHTML).join('');
+}
+
+renderGrid('grid-parks', DATA.parks);
+renderGrid('grid-water', DATA.water);
+renderGrid('grid-space', DATA.space);
+renderGrid('grid-teen', DATA.teen);
+renderGrid('grid-little', DATA.little);
+renderGrid('grid-dinner', DATA.dinner);
+renderGrid('grid-free', DATA.free);
+renderGrid('grid-food-inside', DATA.foodInside);
+renderGrid('grid-food-outside', DATA.foodOutside);
+renderGrid('grid-hotel-inside', DATA.hotelInside);
+renderGrid('grid-hotel-outside', DATA.hotelOutside);
+
+const ALL_ITEMS = [].concat(DATA.parks, DATA.water, DATA.space, DATA.teen, DATA.little, DATA.dinner, DATA.free,
+  DATA.foodInside, DATA.foodOutside, DATA.hotelInside, DATA.hotelOutside);
+const STORE_KEY = 'orlando-trip-votes';
+let votes = {};
+let myVotes = {};
+
+async function loadVotes(){
+  try{
+    const res = await window.storage.get(STORE_KEY, true);
+    votes = res && res.value ? JSON.parse(res.value) : {};
+  }catch(e){
+    votes = {};
+  }
+  try{
+    const mine = localStorage_fallback();
+  }catch(e){}
+  renderCounts();
+  renderLeaderboard();
+}
+
+function renderCounts(){
+  ALL_ITEMS.forEach(item => {
+    const c = votes[item.id] || 0;
+    const el = document.getElementById('count-'+item.id);
+    if(el) el.textContent = c + (c === 1 ? ' vote' : ' votes');
+    const btn = document.getElementById('btn-'+item.id);
+    if(btn && myVotes[item.id]) btn.classList.add('voted'), btn.textContent = '♥ Voted';
+  });
+}
+
+function renderLeaderboard(){
+  const ranked = ALL_ITEMS
+    .map(i => ({id:i.id, name:i.name, count: votes[i.id] || 0}))
+    .filter(i => i.count > 0)
+    .sort((a,b) => b.count - a.count)
+    .slice(0, 8);
+  const lb = document.getElementById('lb-list');
+  if(ranked.length === 0){
+    lb.innerHTML = '<div class="empty">No votes yet &mdash; be the first!</div>';
+    return;
+  }
+  lb.innerHTML = ranked.map((r, idx) => `
+    <div class="lb-row">
+      <span class="lb-rank">${idx+1}</span>
+      <span class="lb-name">${r.name}</span>
+      <span class="lb-count">${r.count}</span>
+    </div>`).join('');
+}
+
+async function vote(id, name){
+  if(myVotes[id]) return; // one vote per person per item per session
+  myVotes[id] = true;
+  votes[id] = (votes[id] || 0) + 1;
+  renderCounts();
+  renderLeaderboard();
+  try{
+    await window.storage.set(STORE_KEY, JSON.stringify(votes), true);
+  }catch(e){
+    console.error('Could not save vote', e);
+  }
+}
+
+function localStorage_fallback(){ return null; }
+
+loadVotes();
+</script>
+
+</body>
+</html>
